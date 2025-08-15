@@ -2,12 +2,11 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
 
-// USE ONE of these two lines ↓↓↓
-// const base = '/CalPointsTool/'  // when using the GitHub Pages URL
-const base = '/'                   // when using a custom domain
-
+const isGH = process.env.GITHUB_ACTIONS === 'true'  // true in GitHub Actions
 export default defineConfig({
-  base,
+  base: isGH ? '/CalPointsTool/' : '/',             // Pages uses /<repo>/, local uses /
   plugins: [react()],
-  resolve: { alias: { '@': path.resolve(__dirname, './src') } },
+  resolve: {
+    alias: { '@': path.resolve(__dirname, './src') },
+  },
 })
