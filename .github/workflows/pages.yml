@@ -1,31 +1,63 @@
 name: Deploy to GitHub Pages
+
 on:
   push:
     branches: [ main ]
+  workflow_dispatch:
+
+# Pages needs these
 permissions:
   contents: read
   pages: write
   id-token: write
+
 concurrency:
   group: "pages"
   cancel-in-progress: true
+
 jobs:
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
-      - run: npm ci
-      - run: npm run build
-      - run: cp dist/index.html dist/404.html 
-      - uses: actions/upload-pages-artifact@v3
+
+      - name: Install deps
+        run: npm ci
+
+      # Build with correct base for GH Pages project site: /<repo>/
+      - name: Build site
+        env:
+          VITE_BASE: "/${{ github.event.repository.name }}/"
+        run: |
+          echo "Building with VITE_BASE=${VITE_BASE}"
+          npm run build
+
+      # SPA fallback for GH Pages (so deep links don’t 404)
+      - name: Add 404 fallback
+        run: cp dist/index.html dist/404.html
+
+      - name: List build output
+        run: ls -la dist && du -h dist
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist
-      - id: deployment
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
         uses: actions/deploy-pages@v4

@@ -1,12 +1,11 @@
+// vite.config.ts
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import path from 'path'
+import path from 'node:path'
 
-const isGH = process.env.GITHUB_ACTIONS === 'true'  // true in GitHub Actions
 export default defineConfig({
-  base: isGH ? '/CalPointsTool/' : '/',             // Pages uses /<repo>/, local uses /
+  // Use env var when present (GH Pages), otherwise root for local/Render
+  base: process.env.VITE_BASE ?? '/',
   plugins: [react()],
-  resolve: {
-    alias: { '@': path.resolve(__dirname, './src') },
-  },
+  resolve: { alias: { '@': path.resolve(__dirname, './src') } },
 })

@@ -301,15 +301,15 @@ export default function CalibrationJsonSetpointBuilder() {
         </Button>
         <Button
           variant="secondary"
-          onClick={() => setGroups((gs) => [...gs, { id: uid(), temperature: "40.0", humidities: [{ id: uid(), nominal: "33.0" }] }])}
+          onClick={() => setGroups((gs) => [...gs, { id: uid(), temperature: "20.0", humidities: [{ id: uid(), nominal: "60.0" }] }])}
         >
-          <Plus className="mr-2 h-4 w-4" /> Quick add 40 °C / 33 %RH
+          <Plus className="mr-2 h-4 w-4" /> Quick add 20 °C / 60 %RH
         </Button>
         <Button
           variant="secondary"
-          onClick={() => setGroups((gs) => [...gs, { id: uid(), temperature: "40.0", humidities: [{ id: uid(), nominal: "33.0" }, { id: uid(), nominal: "80.0" }] }])}
+          onClick={() => setGroups((gs) => [...gs, { id: uid(), temperature: "40.0", humidities: [{ id: uid(), nominal: "33.0" }] }])}
         >
-          <Plus className="mr-2 h-4 w-4" /> Quick add 40 °C / 33 & 80 %RH
+          <Plus className="mr-2 h-4 w-4" /> Quick add 40 °C / 33 %RH
         </Button>
       </div>
 
