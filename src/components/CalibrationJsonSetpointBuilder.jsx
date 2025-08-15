@@ -139,13 +139,11 @@ export default function CalibrationJsonSetpointBuilder() {
     }
   }
 
-  function loadSampleFromConversation() {
+  function loadDefaultLHT65N() {
     setSystemId("1");
     setGroups([
-      { id: uid(), temperature: "-95.0", humidities: [] },
-      { id: uid(), temperature: "0.0", humidities: [] },
-      { id: uid(), temperature: "140.0", humidities: [] },
-      { id: uid(), temperature: "40.0", humidities: [{ id: uid(), nominal: "33.0" }, { id: uid(), nominal: "80.0" }] },
+      { id: uid(), temperature: "20.0", humidities: [{ id: uid(), nominal: "60.0" }] },
+      { id: uid(), temperature: "40.0", humidities: [{ id: uid(), nominal: "33.0" }] },
     ]);
   }
 
@@ -204,8 +202,8 @@ export default function CalibrationJsonSetpointBuilder() {
             <Label htmlFor="compact">Compact JSON</Label>
             <Switch id="compact" checked={compact} onCheckedChange={setCompact} />
           </div>
-          <Button variant="outline" onClick={loadSampleFromConversation}>
-            <RefreshCw className="mr-2 h-4 w-4" /> Load sample
+          <Button variant="outline" onClick={loadDefaultLHT65N}>
+            <RefreshCw className="mr-2 h-4 w-4" /> Load LHT65N Default
           </Button>
           <Button variant="ghost" onClick={resetAll}>
             Reset
